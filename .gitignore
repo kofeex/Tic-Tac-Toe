@@ -105,3 +105,13 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Claude Code / AI tooling — keep out of the homework submission
+.claude/
+/CLAUDE.md
+
+# Local editor configuration
+.vscode/
+
+# Auto-generated VS solution, new slnx format (same category as *.sln above)
+*.slnx

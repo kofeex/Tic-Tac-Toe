@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using TicTacToe.Core;
+using TicTacToe.UI;
 using TMPro;
 using UnityEngine;
 
@@ -10,25 +13,45 @@ namespace TicTacToe.Gameplay
     /// </summary>
     public sealed class GameController : MonoBehaviour
     {
+        private const float StrikeToPopupPause = 0.55f;
+        private const float DrawToPopupPause = 0.45f;
+
         [SerializeField] private BoardView _boardView;
         [SerializeField] private TMP_Text _turnLabel;
+        [SerializeField] private GameOverPopup _gameOverPopup;
         [SerializeField, Min(3)] private int _boardSize = 3;
 
         private Board _board;
+        private float _matchStartTime;
 
         private void Start()
         {
             _board = new Board(_boardSize);
-            _boardView.Build(_board.Size, OnCellClicked);
-            RefreshTurnLabel();
+            _gameOverPopup.RetryClicked += Restart;
+            StartMatch();
         }
 
-        /// <summary>Starts a fresh match on the same board (wired to the Game Over popup's Retry in Phase 4).</summary>
+        private void OnDestroy()
+        {
+            if (_gameOverPopup != null)
+            {
+                _gameOverPopup.RetryClicked -= Restart;
+            }
+        }
+
+        /// <summary>Starts a fresh match on the same board; wired to the Game Over popup's Retry.</summary>
         public void Restart()
         {
+            _gameOverPopup.Close();
             _board.Reset();
+            StartMatch();
+        }
+
+        private void StartMatch()
+        {
             _boardView.Clear();
             _boardView.Build(_board.Size, OnCellClicked);
+            _matchStartTime = Time.time;
             RefreshTurnLabel();
         }
 
@@ -47,9 +70,30 @@ namespace TicTacToe.Gameplay
             }
             else
             {
-                _boardView.SetBoardInteractable(false);
-                _turnLabel.text = GetResultText(_board.Status);
+                StartCoroutine(FinishMatch());
             }
+        }
+
+        /// <summary>Freezes the board, plays the strike on a win, then opens the Game Over popup.</summary>
+        private IEnumerator FinishMatch()
+        {
+            var matchDuration = TimeSpan.FromSeconds(Time.time - _matchStartTime);
+            string resultText = GetResultText(_board.Status);
+
+            _boardView.SetBoardInteractable(false);
+            _turnLabel.text = resultText;
+
+            if (_board.Status == GameStatus.Draw)
+            {
+                yield return new WaitForSeconds(DrawToPopupPause);
+            }
+            else
+            {
+                _boardView.ShowStrike(_board.WinningCells);
+                yield return new WaitForSeconds(BoardView.StrikeDurationSeconds + StrikeToPopupPause);
+            }
+
+            _gameOverPopup.Show(resultText, matchDuration);
         }
 
         private void RefreshTurnLabel() => _turnLabel.text = GetTurnText(_board.CurrentPlayer);

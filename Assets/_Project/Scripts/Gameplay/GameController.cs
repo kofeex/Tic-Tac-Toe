@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TicTacToe.Audio;
 using TicTacToe.Core;
+using TicTacToe.Persistence;
 using TicTacToe.UI;
 using TMPro;
 using UnityEngine;
@@ -96,6 +97,9 @@ namespace TicTacToe.Gameplay
             _finalDuration = TimeSpan.FromSeconds(Time.time - _matchStartTime);
             TimeSpan matchDuration = _finalDuration.Value;
             string resultText = GetResultText(_board.Status);
+
+            // Recorded the moment the match ends, so leaving during the strike still counts it.
+            StatisticsService.RecordMatch(_board.Status, matchDuration);
 
             _boardView.SetBoardInteractable(false);
             _turnLabel.text = resultText;

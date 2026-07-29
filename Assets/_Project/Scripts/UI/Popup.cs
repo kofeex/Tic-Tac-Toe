@@ -46,7 +46,18 @@ namespace TicTacToe.UI
             IsOpen = true;
             AudioManager.PlayPopup();
             gameObject.SetActive(true);
+            OnOpening();
             Restart(OpenRoutine());
+        }
+
+        /// <summary>
+        /// Called on every open, just before the animation starts. Subclasses fill in their
+        /// content here rather than in OnEnable: reopening while the close animation is still
+        /// running leaves the object active, so OnEnable would not run and the content would
+        /// be a match (or a settings change) out of date.
+        /// </summary>
+        protected virtual void OnOpening()
+        {
         }
 
         public void Close()

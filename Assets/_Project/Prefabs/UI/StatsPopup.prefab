@@ -819,7 +819,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6589168982022274186}
+      - m_Target: {fileID: 1135405907230057006}
         m_TargetAssemblyTypeName: TicTacToe.UI.Popup, TicTacToe
         m_MethodName: Close
         m_Mode: 0
@@ -830,7 +830,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!1 &4669118075102743467
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8536936404616303759}
   - component: {fileID: 2825215487458634484}
-  - component: {fileID: 6589168982022274186}
+  - component: {fileID: 1135405907230057006}
   m_Layer: 0
   m_Name: StatsPopup
   m_TagString: Untagged
@@ -919,7 +919,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &6589168982022274186
+--- !u!114 &1135405907230057006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -928,12 +928,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4738278551265272532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798d54efc8b09624a9f18382e5e044c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 44496944694e48c4d8b5e000f5335d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _panel: {fileID: 7318003815832526768}
   _openDuration: 0.25
   _closeDuration: 0.15
+  _gamesPlayedValue: {fileID: 71130638707843773}
+  _player1WinsValue: {fileID: 887182525636909996}
+  _player2WinsValue: {fileID: 6236693849654531874}
+  _drawsValue: {fileID: 3673009532358496890}
+  _averageDurationValue: {fileID: 5627003243466660932}
 --- !u!1 &5121570809110071783
 GameObject:
   m_ObjectHideFlags: 0

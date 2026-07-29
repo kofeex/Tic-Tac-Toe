@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 568248365344748872}
   - component: {fileID: 1626714325907026924}
   - component: {fileID: 1972160511302830111}
+  - component: {fileID: 4902563242416001703}
   m_Layer: 0
   m_Name: MusicToggle
   m_TagString: Untagged
@@ -581,6 +582,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!114 &4902563242416001703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4261082374919787327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68d34ea91323c648865816157b9bb16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4708661884629887287
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +743,7 @@ GameObject:
   - component: {fileID: 4759631968743990714}
   - component: {fileID: 3747664758301870455}
   - component: {fileID: 8184821109105365266}
+  - component: {fileID: 7779284787551393891}
   m_Layer: 0
   m_Name: SfxToggle
   m_TagString: Untagged
@@ -843,6 +857,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!114 &7779284787551393891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4852507524633191641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68d34ea91323c648865816157b9bb16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5193586516652273748
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,6 +1017,7 @@ GameObject:
   - component: {fileID: 8153577388598753755}
   - component: {fileID: 8024927323681256784}
   - component: {fileID: 5165456834594836880}
+  - component: {fileID: 4038011692063554956}
   m_Layer: 0
   m_Name: SettingsPopup
   m_TagString: Untagged
@@ -1046,6 +1073,20 @@ MonoBehaviour:
   _panel: {fileID: 8201101505905449225}
   _openDuration: 0.25
   _closeDuration: 0.15
+--- !u!114 &4038011692063554956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7056795736887642384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f6ecce215393e41a342284d3b48014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _musicToggle: {fileID: 1972160511302830111}
+  _sfxToggle: {fileID: 8184821109105365266}
 --- !u!1 &8446940468034196397
 GameObject:
   m_ObjectHideFlags: 0

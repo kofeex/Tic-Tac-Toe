@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TicTacToe.Audio;
 using TicTacToe.Core;
 using TicTacToe.UI;
 using TMPro;
@@ -76,6 +77,7 @@ namespace TicTacToe.Gameplay
             }
 
             _boardView.SetMark(row, col, _board.GetCell(row, col));
+            AudioManager.PlayMarkPlacement();
             StateChanged?.Invoke();
 
             if (_board.Status == GameStatus.InProgress)
@@ -104,6 +106,7 @@ namespace TicTacToe.Gameplay
             }
             else
             {
+                AudioManager.PlayStrike();
                 _boardView.ShowStrike(_board.WinningCells);
                 yield return new WaitForSeconds(BoardView.StrikeDurationSeconds + StrikeToPopupPause);
             }

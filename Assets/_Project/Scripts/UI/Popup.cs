@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TicTacToe.Audio;
 using UnityEngine;
 
 namespace TicTacToe.UI
@@ -43,6 +44,7 @@ namespace TicTacToe.UI
             }
 
             IsOpen = true;
+            AudioManager.PlayPopup();
             gameObject.SetActive(true);
             Restart(OpenRoutine());
         }
@@ -55,6 +57,7 @@ namespace TicTacToe.UI
             }
 
             IsOpen = false;
+            AudioManager.PlayPopup();
             Restart(CloseRoutine());
         }
 

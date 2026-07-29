@@ -92,6 +92,19 @@ namespace TicTacToe.Core
         }
 
         /// <summary>
+        /// Number of moves the given player has made since the last reset. Because X always
+        /// moves first and turns strictly alternate, X owns the odd-numbered moves.
+        /// </summary>
+        /// <param name="player">The player whose moves to count.</param>
+        /// <exception cref="ArgumentException"><paramref name="player"/> is not X or O.</exception>
+        public int GetMoveCount(Mark player) => player switch
+        {
+            Mark.X => (MoveCount + 1) / 2,
+            Mark.O => MoveCount / 2,
+            _ => throw new ArgumentException("Player must be X or O.", nameof(player))
+        };
+
+        /// <summary>
         /// Attempts to place the current player's mark. Returns false without changing any state
         /// when the game is already over, the coordinates are outside the board or the cell is
         /// occupied. On success the move is applied, the status re-evaluated, and — only while

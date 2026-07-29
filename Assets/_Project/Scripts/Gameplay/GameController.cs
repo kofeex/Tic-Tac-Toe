@@ -23,6 +23,17 @@ namespace TicTacToe.Gameplay
 
         private Board _board;
         private float _matchStartTime;
+        private TimeSpan? _finalDuration;
+
+        /// <summary>Raised whenever the board changes: a mark was placed or a new match started.</summary>
+        public event Action StateChanged;
+
+        /// <summary>How long the current match has run; frozen at the final value once it ends.</summary>
+        public TimeSpan MatchDuration =>
+            _board == null ? TimeSpan.Zero : _finalDuration ?? TimeSpan.FromSeconds(Time.time - _matchStartTime);
+
+        /// <summary>Moves the given player has made this match.</summary>
+        public int GetMoveCount(Mark player) => _board?.GetMoveCount(player) ?? 0;
 
         private void Start()
         {
@@ -52,7 +63,9 @@ namespace TicTacToe.Gameplay
             _boardView.Clear();
             _boardView.Build(_board.Size, OnCellClicked);
             _matchStartTime = Time.time;
+            _finalDuration = null;
             RefreshTurnLabel();
+            StateChanged?.Invoke();
         }
 
         private void OnCellClicked(int row, int col)
@@ -63,6 +76,7 @@ namespace TicTacToe.Gameplay
             }
 
             _boardView.SetMark(row, col, _board.GetCell(row, col));
+            StateChanged?.Invoke();
 
             if (_board.Status == GameStatus.InProgress)
             {
@@ -77,7 +91,8 @@ namespace TicTacToe.Gameplay
         /// <summary>Freezes the board, plays the strike on a win, then opens the Game Over popup.</summary>
         private IEnumerator FinishMatch()
         {
-            var matchDuration = TimeSpan.FromSeconds(Time.time - _matchStartTime);
+            _finalDuration = TimeSpan.FromSeconds(Time.time - _matchStartTime);
+            TimeSpan matchDuration = _finalDuration.Value;
             string resultText = GetResultText(_board.Status);
 
             _boardView.SetBoardInteractable(false);

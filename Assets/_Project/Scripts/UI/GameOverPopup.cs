@@ -29,7 +29,7 @@ namespace TicTacToe.UI
         public void Show(string resultText, TimeSpan matchDuration)
         {
             _resultLabel.text = resultText;
-            _durationLabel.text = $"Time  {(int)matchDuration.TotalMinutes}:{matchDuration.Seconds:00}";
+            _durationLabel.text = $"Time  {DurationText.Format(matchDuration)}";
             Open();
         }
     }

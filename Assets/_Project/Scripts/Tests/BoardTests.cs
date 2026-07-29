@@ -254,6 +254,53 @@ namespace TicTacToe.Tests
             Assert.That(board.WinningCells, Is.EqualTo(new[] { (2, 1), (2, 2), (2, 3), (2, 4) }));
         }
 
+        // ----- Per-player move counts -----
+
+        [Test]
+        public void GetMoveCount_EmptyBoard_IsZeroForBothPlayers()
+        {
+            var board = new Board();
+
+            Assert.That(board.GetMoveCount(Mark.X), Is.EqualTo(0));
+            Assert.That(board.GetMoveCount(Mark.O), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetMoveCount_TracksAlternatingMoves()
+        {
+            var board = new Board();
+
+            Play(board, (0, 0)); // X
+            Assert.That(board.GetMoveCount(Mark.X), Is.EqualTo(1));
+            Assert.That(board.GetMoveCount(Mark.O), Is.EqualTo(0));
+
+            Play(board, (1, 1)); // O
+            Assert.That(board.GetMoveCount(Mark.X), Is.EqualTo(1));
+            Assert.That(board.GetMoveCount(Mark.O), Is.EqualTo(1));
+
+            Play(board, (2, 2)); // X
+            Assert.That(board.GetMoveCount(Mark.X), Is.EqualTo(2));
+            Assert.That(board.GetMoveCount(Mark.O), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void GetMoveCount_AfterFinishedGame_KeepsFinalCounts()
+        {
+            var board = new Board();
+            Play(board, (0, 0), (1, 0), (0, 1), (1, 1), (0, 2)); // X wins the top row.
+
+            Assert.That(board.GetMoveCount(Mark.X), Is.EqualTo(3));
+            Assert.That(board.GetMoveCount(Mark.O), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GetMoveCount_None_Throws()
+        {
+            var board = new Board();
+
+            Assert.Throws<ArgumentException>(() => board.GetMoveCount(Mark.None));
+        }
+
         // ----- Reset -----
 
         [Test]

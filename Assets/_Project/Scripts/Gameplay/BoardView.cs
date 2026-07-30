@@ -28,6 +28,8 @@ namespace TicTacToe.Gameplay
 
         [SerializeField] private GridLayoutGroup _grid;
         [SerializeField] private Sprite _cellSprite;
+        [SerializeField] private ParticleSystem _placementVfxPrefab;
+        [SerializeField] private ParticleSystem _strikeVfxPrefab;
 
         private Cell[,] _cells;
         private ThemeSelection _themes;
@@ -67,7 +69,10 @@ namespace TicTacToe.Gameplay
             }
         }
 
-        /// <summary>Shows the placed mark in the given cell and locks its button.</summary>
+        /// <summary>
+        /// Shows the placed mark in the given cell, locks its button, and spawns the placement
+        /// VFX at the mark's world position (no-op if that effect isn't assigned).
+        /// </summary>
         public void SetMark(int row, int col, Mark mark)
         {
             Cell cell = _cells[row, col];
@@ -75,6 +80,7 @@ namespace TicTacToe.Gameplay
             cell.Button.interactable = false;
             cell.Mark.sprite = _themes == null ? null : _themes.GetSprite(mark);
             cell.Mark.enabled = cell.Mark.sprite != null;
+            SpawnVfx(_placementVfxPrefab, cell.Mark.transform.position);
         }
 
         /// <summary>Enables or disables the buttons of all empty cells; marked cells stay locked.</summary>
@@ -102,6 +108,7 @@ namespace TicTacToe.Gameplay
         /// <param name="winner">
         /// The mark that won, so the line is drawn in that player's own theme colour.
         /// </param>
+        /// <remarks>Also spawns the strike VFX at the midpoint of the winning line (no-op if that effect isn't assigned).</remarks>
         public void ShowStrike(IReadOnlyList<(int Row, int Col)> cells, Mark winner)
         {
             if (cells == null || cells.Count < 2)
@@ -138,6 +145,8 @@ namespace TicTacToe.Gameplay
             image.type = Image.Type.Sliced;
             image.color = _themes == null ? Color.white : _themes.GetStrikeColor(winner);
             image.raycastTarget = false;
+
+            SpawnVfx(_strikeVfxPrefab, (first.position + last.position) * 0.5f);
 
             _strikeAnimation = StartCoroutine(GrowStrike(rect, length));
         }
@@ -186,6 +195,23 @@ namespace TicTacToe.Gameplay
 
             rect.sizeDelta = new Vector2(length, thickness);
             _strikeAnimation = null;
+        }
+
+        /// <summary>
+        /// Instantiates a one-shot VFX prefab at a world position and destroys it once its
+        /// particles have finished emitting and the longest-lived one has faded out. No-op if
+        /// <paramref name="prefab"/> is unassigned, so a missing VFX asset never takes the
+        /// gameplay feature down with it.
+        /// </summary>
+        private void SpawnVfx(ParticleSystem prefab, Vector3 worldPosition)
+        {
+            if (prefab == null)
+            {
+                return;
+            }
+
+            ParticleSystem instance = Instantiate(prefab, worldPosition, Quaternion.identity);
+            Destroy(instance.gameObject, instance.main.duration + instance.main.startLifetime.constantMax);
         }
 
         private Cell CreateCell(int row, int col, float cellSize, Action<int, int> cellClicked)

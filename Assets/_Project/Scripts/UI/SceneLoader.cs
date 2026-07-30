@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace TicTacToe.UI
 {
@@ -12,7 +11,7 @@ namespace TicTacToe.UI
     {
         [SerializeField] private string _sceneName;
 
-        /// <summary>Loads the configured scene. Hook this to a Button's onClick.</summary>
-        public void Load() => SceneManager.LoadScene(_sceneName);
+        /// <summary>Loads the configured scene through a fade. Hook this to a Button's onClick.</summary>
+        public void Load() => SceneFader.Load(_sceneName);
     }
 }

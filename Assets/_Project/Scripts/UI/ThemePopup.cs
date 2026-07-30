@@ -92,10 +92,11 @@ namespace TicTacToe.UI
 
                 offered.Add(theme);
 
-                // TMP's only text-and-image option also carries a tint. White draws the artwork
-                // as authored, and it has to stay opaque: TMP switches an option's image off
-                // entirely when the tint is transparent.
-                options.Add(new TMP_Dropdown.OptionData(theme.DisplayName, theme.Sprite, Color.white));
+                // Text is intentionally blank: the popup shows each look by its artwork alone, not
+                // its name. TMP's only text-and-image option also carries a tint — white draws the
+                // artwork as authored, and it has to stay opaque, since TMP switches an option's
+                // image off entirely when the tint is transparent.
+                options.Add(new TMP_Dropdown.OptionData(string.Empty, theme.Sprite, Color.white));
             }
 
             dropdown.AddOptions(options);

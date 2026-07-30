@@ -3,6 +3,7 @@ using System.Collections;
 using TicTacToe.Audio;
 using TicTacToe.Core;
 using TicTacToe.Persistence;
+using TicTacToe.Themes;
 using TicTacToe.UI;
 using TMPro;
 using UnityEngine;
@@ -63,7 +64,7 @@ namespace TicTacToe.Gameplay
         private void StartMatch()
         {
             _boardView.Clear();
-            _boardView.Build(_board.Size, OnCellClicked);
+            _boardView.Build(_board.Size, ThemeService.CurrentSelection, OnCellClicked);
             _matchStartTime = Time.time;
             _finalDuration = null;
             RefreshTurnLabel();
@@ -111,7 +112,7 @@ namespace TicTacToe.Gameplay
             else
             {
                 AudioManager.PlayStrike();
-                _boardView.ShowStrike(_board.WinningCells);
+                _boardView.ShowStrike(_board.WinningCells, GetWinner(_board.Status));
                 yield return new WaitForSeconds(BoardView.StrikeDurationSeconds + StrikeToPopupPause);
             }
 
@@ -130,6 +131,17 @@ namespace TicTacToe.Gameplay
             GameStatus.XWins => "Player 1 Wins!",
             GameStatus.OWins => "Player 2 Wins!",
             _ => "Draw!"
+        };
+
+        /// <summary>
+        /// Maps a status to the mark that won it, so the strike can be drawn in the winner's
+        /// own theme colour. <see cref="Mark.None"/> for a draw or an unfinished match.
+        /// </summary>
+        private static Mark GetWinner(GameStatus status) => status switch
+        {
+            GameStatus.XWins => Mark.X,
+            GameStatus.OWins => Mark.O,
+            _ => Mark.None
         };
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TicTacToe.Core;
-using TMPro;
+using TicTacToe.Themes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,21 +18,19 @@ namespace TicTacToe.Gameplay
         public const float StrikeDurationSeconds = 0.45f;
 
         private const float CellSpacing = 20f;
-        private const float MarkFontScale = 0.62f;
+        private const float MarkInsetScale = 0.16f;
         private const float StrikeThicknessScale = 0.16f;
         private const float StrikeExtendScale = 0.32f;
 
         private static readonly Color CellColor = new Color(0.30f, 0.16f, 0.04f, 0.55f);
         private static readonly Color CellHighlightTint = new Color(1.15f, 1.15f, 1.15f);
         private static readonly Color CellPressedTint = new Color(1.30f, 1.30f, 1.30f);
-        private static readonly Color XColor = new Color(0.44f, 0.81f, 0.97f);
-        private static readonly Color OColor = new Color(0.61f, 0.97f, 0.72f);
-        private static readonly Color StrikeColor = new Color(1f, 0.84f, 0.35f, 0.95f);
 
         [SerializeField] private GridLayoutGroup _grid;
         [SerializeField] private Sprite _cellSprite;
 
         private Cell[,] _cells;
+        private ThemeSelection _themes;
         private GameObject _strike;
         private Coroutine _strikeAnimation;
 
@@ -41,10 +39,12 @@ namespace TicTacToe.Gameplay
         /// grid, with square cells sized so the whole board fits the grid's rect in either orientation.
         /// </summary>
         /// <param name="size">Number of rows and columns to create.</param>
+        /// <param name="themes">Both players' themes; each mark is drawn with its own player's artwork.</param>
         /// <param name="cellClicked">Invoked with (row, column) when a cell button is pressed.</param>
-        public void Build(int size, Action<int, int> cellClicked)
+        public void Build(int size, ThemeSelection themes, Action<int, int> cellClicked)
         {
             Clear();
+            _themes = themes;
 
             Rect gridRect = ((RectTransform)_grid.transform).rect;
             float cellSize = (Mathf.Min(gridRect.width, gridRect.height) - CellSpacing * (size - 1)) / size;
@@ -73,9 +73,8 @@ namespace TicTacToe.Gameplay
             Cell cell = _cells[row, col];
             cell.IsMarked = true;
             cell.Button.interactable = false;
-            cell.Label.text = mark == Mark.X ? "X" : "O";
-            cell.Label.color = mark == Mark.X ? XColor : OColor;
-            cell.Label.enabled = true;
+            cell.Mark.sprite = _themes == null ? null : _themes.GetSprite(mark);
+            cell.Mark.enabled = cell.Mark.sprite != null;
         }
 
         /// <summary>Enables or disables the buttons of all empty cells; marked cells stay locked.</summary>
@@ -100,7 +99,10 @@ namespace TicTacToe.Gameplay
         /// first cell of the run towards the last over <see cref="StrikeDurationSeconds"/>.
         /// </summary>
         /// <param name="cells">The winning run in line order, as reported by the board.</param>
-        public void ShowStrike(IReadOnlyList<(int Row, int Col)> cells)
+        /// <param name="winner">
+        /// The mark that won, so the line is drawn in that player's own theme colour.
+        /// </param>
+        public void ShowStrike(IReadOnlyList<(int Row, int Col)> cells, Mark winner)
         {
             if (cells == null || cells.Count < 2)
             {
@@ -134,7 +136,7 @@ namespace TicTacToe.Gameplay
             var image = _strike.AddComponent<Image>();
             image.sprite = _cellSprite;
             image.type = Image.Type.Sliced;
-            image.color = StrikeColor;
+            image.color = _themes == null ? Color.white : _themes.GetStrikeColor(winner);
             image.raycastTarget = false;
 
             _strikeAnimation = StartCoroutine(GrowStrike(rect, length));
@@ -209,36 +211,37 @@ namespace TicTacToe.Gameplay
             button.colors = colors;
             button.onClick.AddListener(() => cellClicked(row, col));
 
-            var labelObject = new GameObject("Label", typeof(RectTransform));
-            labelObject.transform.SetParent(cellObject.transform, false);
-            var labelRect = (RectTransform)labelObject.transform;
-            labelRect.anchorMin = Vector2.zero;
-            labelRect.anchorMax = Vector2.one;
-            labelRect.offsetMin = Vector2.zero;
-            labelRect.offsetMax = Vector2.zero;
+            // The mark sits inside the cell with a margin so the artwork never touches the edges.
+            var markObject = new GameObject("Mark", typeof(RectTransform));
+            markObject.transform.SetParent(cellObject.transform, false);
+            var markRect = (RectTransform)markObject.transform;
+            markRect.anchorMin = Vector2.zero;
+            markRect.anchorMax = Vector2.one;
+            float inset = cellSize * MarkInsetScale;
+            markRect.offsetMin = new Vector2(inset, inset);
+            markRect.offsetMax = new Vector2(-inset, -inset);
 
-            var label = labelObject.AddComponent<TextMeshProUGUI>();
-            label.raycastTarget = false;
-            label.fontStyle = FontStyles.Bold;
-            label.fontSize = cellSize * MarkFontScale;
-            label.alignment = TextAlignmentOptions.Center;
-            label.enabled = false;
+            var mark = markObject.AddComponent<Image>();
+            mark.raycastTarget = false;
+            mark.preserveAspect = true;
+            mark.enabled = false;
 
-            return new Cell(button, label);
+            return new Cell(button, mark);
         }
 
         /// <summary>The per-cell scene pieces the view needs to update after creation.</summary>
         private sealed class Cell
         {
-            public Cell(Button button, TMP_Text label)
+            public Cell(Button button, Image mark)
             {
                 Button = button;
-                Label = label;
+                Mark = mark;
             }
 
             public Button Button { get; }
 
-            public TMP_Text Label { get; }
+            /// <summary>Displays the themed X or O artwork; disabled while the cell is empty.</summary>
+            public Image Mark { get; }
 
             public bool IsMarked { get; set; }
         }

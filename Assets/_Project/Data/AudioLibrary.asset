@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1210415d727259c448370cbd4cf91cef, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: 
+  _mixer: {fileID: 24100000, guid: 029c0b86aa521374987bb5b0e0a42162, type: 2}
+  _musicGroup: {fileID: 24400001, guid: 029c0b86aa521374987bb5b0e0a42162, type: 2}
+  _sfxGroup: {fileID: 24400002, guid: 029c0b86aa521374987bb5b0e0a42162, type: 2}
+  _backgroundMusic: {fileID: 8300000, guid: edfd0d7eb33fefc45b67e526ac94e030, type: 3}
+  _buttonClick: {fileID: 8300000, guid: c373ada21c2c5b646be1b53fb37f1ec7, type: 3}
+  _markPlacement: {fileID: 8300000, guid: 1e633ced841f7834abe3999cfdb9d345, type: 3}
+  _popup: {fileID: 8300000, guid: 9d2113f56fc83384f91a562e98083372, type: 3}
+  _strike: {fileID: 8300000, guid: d8e1781e43180404d84b402d35dda9d8, type: 3}

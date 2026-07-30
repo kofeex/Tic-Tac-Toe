@@ -10,11 +10,6 @@ namespace TicTacToe.Themes
     [Serializable]
     public sealed class ThemePreferences
     {
-        // A save file written before per-player themes held a single "SelectedThemeId" field.
-        // JsonUtility ignores fields it does not recognise and leaves the rest at their field
-        // initialisers, so such a file simply loads as two empty ids and both players fall back
-        // to the library default. That one-off reset is acceptable, hence no migration code.
-
         /// <summary>Id of the theme chosen for the X mark (Player 1); empty means "use the default".</summary>
         public string XThemeId = string.Empty;
 

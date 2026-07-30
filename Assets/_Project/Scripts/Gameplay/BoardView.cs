@@ -228,8 +228,6 @@ namespace TicTacToe.Gameplay
             button.targetGraphic = background;
             button.transition = Selectable.Transition.ColorTint;
 
-            // Tints above white brighten the dark cell color on hover/press
-            // (the product stays below 1, so nothing clips).
             ColorBlock colors = button.colors;
             colors.highlightedColor = CellHighlightTint;
             colors.pressedColor = CellPressedTint;

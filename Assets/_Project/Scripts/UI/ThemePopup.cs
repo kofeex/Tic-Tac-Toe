@@ -17,19 +17,11 @@ namespace TicTacToe.UI
     /// </summary>
     public sealed class ThemePopup : Popup
     {
-        // Most rows the open list shows before it scrolls instead of growing further, so a
-        // catalogue that outgrows the screen degrades to a scrollbar rather than an ever-taller
-        // popup or a prefab number someone has to remember to retune by hand. Internal so
-        // DropdownListFix (which corrects TMP's own on-screen-fit pass) shares this exact cap
-        // instead of carrying a second copy that could drift out of sync.
         internal const int MaxVisibleOptions = 4;
 
         [SerializeField] private TMP_Dropdown _player1Dropdown;
         [SerializeField] private TMP_Dropdown _player2Dropdown;
 
-        // The looks each dropdown actually offers, in option order. Entries the catalogue lists
-        // as null are skipped while filling, so an option index only means something through
-        // these lists — it is not an index into the catalogue and the two can drift apart.
         private readonly List<MarkTheme> _player1Themes = new List<MarkTheme>();
         private readonly List<MarkTheme> _player2Themes = new List<MarkTheme>();
 
@@ -37,7 +29,6 @@ namespace TicTacToe.UI
         {
             base.Awake();
 
-            // Player 1 always plays X and Player 2 always plays O, so it is one dropdown per mark.
             Populate(_player1Dropdown, _player1Themes, Mark.X);
             Populate(_player2Dropdown, _player2Themes, Mark.O);
         }
@@ -70,8 +61,6 @@ namespace TicTacToe.UI
                 return;
             }
 
-            // Clearing first means the list shows exactly the catalogue — and nothing at all
-            // when the catalogue turns out to be missing.
             dropdown.ClearOptions();
             dropdown.onValueChanged.AddListener(optionIndex => Choose(offered, mark, optionIndex));
 
@@ -91,11 +80,6 @@ namespace TicTacToe.UI
                 }
 
                 offered.Add(theme);
-
-                // Text is intentionally blank: the popup shows each look by its artwork alone, not
-                // its name. TMP's only text-and-image option also carries a tint — white draws the
-                // artwork as authored, and it has to stay opaque, since TMP switches an option's
-                // image off entirely when the tint is transparent.
                 options.Add(new TMP_Dropdown.OptionData(string.Empty, theme.Sprite, Color.white));
             }
 

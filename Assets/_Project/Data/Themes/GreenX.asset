@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 675e7c70245ce2a4db53ffa311bf2929, type: 3}
-  m_Name: ClassicO
+  m_Script: {fileID: 11500000, guid: 5369d98bf20ed7c408e61221d9d5b79d, type: 3}
+  m_Name: GreenX
   m_EditorClassIdentifier: 
-  _id: classic
-  _displayName: Classic
-  _sprite: {fileID: -4543041181297324008, guid: 64e4a752e6e5ab64d9398ca2128ee092, type: 3}
-  _strikeColor: {r: 1, g: 0.35, b: 0.3, a: 0.95}
+  _id: greenX
+  _displayName: Green
+  _sprite: {fileID: -5671269848223593115, guid: 64e4a752e6e5ab64d9398ca2128ee092, type: 3}
+  _strikeColor: {r: 0.62, g: 0.95, b: 0.62, a: 0.95}

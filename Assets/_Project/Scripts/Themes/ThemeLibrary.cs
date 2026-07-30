@@ -17,11 +17,6 @@ namespace TicTacToe.Themes
         [SerializeField] private XMarkTheme[] _xThemes;
         [SerializeField] private OMarkTheme[] _oThemes;
 
-        // The two properties below hand the arrays out as-is: IReadOnlyList is covariant, so an
-        // XMarkTheme[] is already an IReadOnlyList<MarkTheme> and callers that only need to read
-        // a theme cost neither a cast nor a copy. Keeping the fields typed to the subclass is
-        // what makes the Inspector refuse a mis-dragged asset.
-
         /// <summary>Every selectable X look, in the order they should be shown.</summary>
         public IReadOnlyList<MarkTheme> XThemes => _xThemes;
 

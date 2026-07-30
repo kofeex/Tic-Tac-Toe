@@ -28,7 +28,6 @@ namespace TicTacToe.Persistence
         /// <param name="duration">How long the match ran.</param>
         public static void RecordMatch(GameStatus result, TimeSpan duration)
         {
-            // Validation lives in MatchStatistics; an invalid call throws before anything is written.
             Current.RecordMatch(result, duration);
             Save();
         }

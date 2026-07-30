@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5369d98bf20ed7c408e61221d9d5b79d, type: 3}
-  m_Name: CrayonX
+  m_Name: BlueX
   m_EditorClassIdentifier: 
-  _id: crayon
-  _displayName: Crayon
-  _sprite: {fileID: -5671269848223593115, guid: 64e4a752e6e5ab64d9398ca2128ee092, type: 3}
-  _strikeColor: {r: 0.62, g: 0.95, b: 0.62, a: 0.95}
+  _id: blueX
+  _displayName: Blue
+  _sprite: {fileID: 5828903514592741260, guid: 64e4a752e6e5ab64d9398ca2128ee092, type: 3}
+  _strikeColor: {r: 1, g: 0.9, b: 0.35, a: 0.95}
